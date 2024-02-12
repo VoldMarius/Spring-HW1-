@@ -35,9 +35,22 @@ public class UserRepository {
     public User save(User user) {
         String sql = "INSERT INTO userTable (firstName,lastName) VALUES ( ?, ?)";
         jdbc.update(sql, user.getFirstName(), user.getLastName());
-        return  user;
+        return user;
     }
 
-    //public void deleteById(int id)
-    //"DELETE FROM userTable WHERE id=?"
+    public void deleteById(int id) {
+        String sql = "DELETE FROM userTable WHERE id=?";
+        jdbc.update(sql, id);
+    }
+
+    public User findUser(int id){/*Метод используется для поиска пользователя в базе данных по указанному идентификатору.*/
+        String sql = "SELECT * FROM userTable WHERE id=?";
+        return jdbc.queryForObject(sql, User.class, id);/* выполняет SQL запрос и возвращает один объект типа User
+         из результата запроса. Параметры метода - SQL запрос (sql), класс объекта, который ожидается вернуть
+          (User.class) и значение идентификатора (id).*/
+    }
+    public void updateUser(User user, int id) {
+        String sql = "UPDATE userTable SET firstName=?, lastName=? WHERE id=?";
+        jdbc.update(sql, user.getFirstName(), user.getLastName(), id);
+    }
 }
